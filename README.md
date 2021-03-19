@@ -1,18 +1,14 @@
 # flutter_cipher
 
-一个Flutter加密类库
 A Flutter encryption class library
 
 ## Getting Started
 
-兼容iOS和Android
 Compatible with iOS and Android
 
 RSA:
-    密钥格式: PKCS#1
     Key format: PKCS#1
 
-案例:
 example:
 
     Asymmetric rsa = Cipher.getAsymmetricInstance(RSA(publicKey: publicKey, privateKey: privateKey));
@@ -30,7 +26,6 @@ example:
 
 AES:
 
-案例:
 example:
 
     Key key = Key.fromUtf8('32 length key................');

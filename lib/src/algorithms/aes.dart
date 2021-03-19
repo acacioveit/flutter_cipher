@@ -9,11 +9,11 @@ class AES implements Symmetry {
 
   AES(this.key, {this.mode = AESMode.sic, this.padding = 'PKCS7'})
       : _blockCipher = padding != null
-      ? PaddedBlockCipher('AES/${_modes[mode]}/$padding')
-      : BlockCipher('AES/${_modes[mode]}');
+            ? PaddedBlockCipher('AES/${_modes[mode]}/$padding')
+            : BlockCipher('AES/${_modes[mode]}');
 
   @override
-  Encrypted encrypt(Uint8List bytes, {IV iv}) {
+  Encrypted encrypt(Uint8List bytes, {required IV iv}) {
     _blockCipher
       ..reset()
       ..init(true, _buildParams(iv));
@@ -22,7 +22,7 @@ class AES implements Symmetry {
   }
 
   @override
-  Encrypted encryptString(String input, {IV iv}) {
+  Encrypted encryptString(String input, {required IV iv}) {
     _blockCipher
       ..reset()
       ..init(true, _buildParams(iv));
@@ -32,7 +32,7 @@ class AES implements Symmetry {
   }
 
   @override
-  Uint8List decrypt(Encrypted encrypted, {IV iv}) {
+  Uint8List decrypt(Encrypted encrypted, {required IV iv}) {
     _blockCipher
       ..reset()
       ..init(false, _buildParams(iv));
@@ -41,7 +41,7 @@ class AES implements Symmetry {
   }
 
   @override
-  String decrypt2String(Encrypted encrypted, {IV iv}) {
+  String decrypt2String(Encrypted encrypted, {required IV iv}) {
     _blockCipher
       ..reset()
       ..init(false, _buildParams(iv));

@@ -8,19 +8,15 @@ class RSA extends Asymmetric {
   final PublicKeyParameter<RSAPublicKey> _publicKeyParams;
   final PrivateKeyParameter<RSAPrivateKey> _privateKeyParameter;
 
-  final AsymmetricBlockCipher _asymmetricBlockCipher = PKCS1Encoding(RSAEngine());
+  final AsymmetricBlockCipher _asymmetricBlockCipher =
+      PKCS1Encoding(RSAEngine());
 
-
-  RSA({this.publicKey, this.privateKey})
+  RSA({required this.publicKey, required this.privateKey})
       : this._publicKeyParams = PublicKeyParameter(publicKey),
         this._privateKeyParameter = PrivateKeyParameter(privateKey);
 
   @override
-  String decryptPrivate(Encrypted encrypted, {IV iv}) {
-    if (privateKey == null) {
-      throw StateError('Can\'t decrypt without a private key, null given.');
-    }
-
+  String decryptPrivate(Encrypted encrypted, {required IV iv}) {
     _asymmetricBlockCipher
       ..reset()
       ..init(false, _privateKeyParameter);
@@ -29,7 +25,7 @@ class RSA extends Asymmetric {
   }
 
   @override
-  String decryptPublic(Encrypted encrypted, {IV iv}) {
+  String decryptPublic(Encrypted encrypted, {required IV iv}) {
     if (publicKey == null) {
       throw StateError('Can\'t decrypt without a public key, null given.');
     }
@@ -42,7 +38,7 @@ class RSA extends Asymmetric {
   }
 
   @override
-  Encrypted encryptPrivate(String input, {IV iv}) {
+  Encrypted encryptPrivate(String input, {required IV iv}) {
     if (null == input || input.isEmpty) {
       throw StateError('The data cannot be null or empty.');
     }
@@ -55,12 +51,12 @@ class RSA extends Asymmetric {
       ..reset()
       ..init(true, _privateKeyParameter);
 
-    return Encrypted(
-        _asymmetricBlockCipher.process(Uint8List.fromList(convert.utf8.encode(input))));
+    return Encrypted(_asymmetricBlockCipher
+        .process(Uint8List.fromList(convert.utf8.encode(input))));
   }
 
   @override
-  Encrypted encryptPublic(String input, {IV iv}) {
+  Encrypted encryptPublic(String input, {required IV iv}) {
     if (null == input || input.isEmpty) {
       throw StateError('The data cannot be null or empty.');
     }
@@ -73,8 +69,8 @@ class RSA extends Asymmetric {
       ..reset()
       ..init(true, _publicKeyParams);
 
-    return Encrypted(
-        _asymmetricBlockCipher.process(Uint8List.fromList(convert.utf8.encode(input))));
+    return Encrypted(_asymmetricBlockCipher
+        .process(Uint8List.fromList(convert.utf8.encode(input))));
   }
 }
 
@@ -149,4 +145,3 @@ class RSAKeyParser {
     return parser.nextObject() as ASN1Sequence;
   }
 }
-

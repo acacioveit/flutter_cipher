@@ -1,17 +1,17 @@
 name: flutter_cipher
 description: A new Flutter Cipher package.
-version: 0.0.1
+version: 1.0.0
 author: yourks <yourks@aliyun.com>
 homepage: https://github.com/YoursChan/flutter_cipher
 
 environment:
-  sdk: ">=2.1.0 <3.0.0"
+  sdk: ">=2.12.0 <3.0.0"
 
 dependencies:
   asn1lib: ^0.5.8
   collection: ^1.14.11
   pointycastle: ^1.0.1
-  args: ^1.5.1
+  args: ^2.0.0
 
   flutter:
     sdk: flutter
