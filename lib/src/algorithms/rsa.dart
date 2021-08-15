@@ -11,12 +11,12 @@ class RSA extends Asymmetric {
   final AsymmetricBlockCipher _asymmetricBlockCipher = PKCS1Encoding(RSAEngine());
 
 
-  RSA({this.publicKey, this.privateKey})
+  RSA({required this.publicKey, required this.privateKey})
       : this._publicKeyParams = PublicKeyParameter(publicKey),
         this._privateKeyParameter = PrivateKeyParameter(privateKey);
 
   @override
-  String decryptPrivate(Encrypted encrypted, {IV iv}) {
+  String decryptPrivate(Encrypted encrypted, {IV? iv}) {
     if (privateKey == null) {
       throw StateError('Can\'t decrypt without a private key, null given.');
     }
@@ -29,7 +29,7 @@ class RSA extends Asymmetric {
   }
 
   @override
-  String decryptPublic(Encrypted encrypted, {IV iv}) {
+  String decryptPublic(Encrypted encrypted, {IV? iv}) {
     if (publicKey == null) {
       throw StateError('Can\'t decrypt without a public key, null given.');
     }
@@ -42,7 +42,7 @@ class RSA extends Asymmetric {
   }
 
   @override
-  Encrypted encryptPrivate(String input, {IV iv}) {
+  Encrypted encryptPrivate(String input, {IV? iv}) {
     if (null == input || input.isEmpty) {
       throw StateError('The data cannot be null or empty.');
     }
@@ -60,7 +60,7 @@ class RSA extends Asymmetric {
   }
 
   @override
-  Encrypted encryptPublic(String input, {IV iv}) {
+  Encrypted encryptPublic(String input, {IV? iv}) {
     if (null == input || input.isEmpty) {
       throw StateError('The data cannot be null or empty.');
     }
@@ -105,15 +105,15 @@ class RSAKeyParser {
   }
 
   RSAAsymmetricKey _parsePublic(ASN1Sequence sequence) {
-    final modulus = (sequence.elements[0] as ASN1Integer).valueAsBigInteger;
-    final exponent = (sequence.elements[1] as ASN1Integer).valueAsBigInteger;
+    final modulus = (sequence.elements[0] as ASN1Integer).valueAsBigInteger!;
+    final exponent = (sequence.elements[1] as ASN1Integer).valueAsBigInteger!;
 
     return RSAPublicKey(modulus, exponent);
   }
 
   RSAAsymmetricKey _parsePrivate(ASN1Sequence sequence) {
-    final modulus = (sequence.elements[1] as ASN1Integer).valueAsBigInteger;
-    final exponent = (sequence.elements[3] as ASN1Integer).valueAsBigInteger;
+    final modulus = (sequence.elements[1] as ASN1Integer).valueAsBigInteger!;
+    final exponent = (sequence.elements[3] as ASN1Integer).valueAsBigInteger!;
     final p = (sequence.elements[4] as ASN1Integer).valueAsBigInteger;
     final q = (sequence.elements[5] as ASN1Integer).valueAsBigInteger;
 

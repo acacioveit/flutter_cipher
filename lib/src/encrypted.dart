@@ -12,7 +12,7 @@ class Encrypted {
     List.generate(encoded.length,
             (i) => i % 2 == 0 ? encoded.substring(i, i + 2) : null)
         .where((b) => b != null)
-        .map((b) => int.parse(b, radix: 16))
+        .map((b) => int.parse(b!, radix: 16))
         .toList(),
   );
 

@@ -13,7 +13,7 @@ class AES implements Symmetry {
       : BlockCipher('AES/${_modes[mode]}');
 
   @override
-  Encrypted encrypt(Uint8List bytes, {IV iv}) {
+  Encrypted encrypt(Uint8List bytes, {IV? iv}) {
     _blockCipher
       ..reset()
       ..init(true, _buildParams(iv));
@@ -22,7 +22,7 @@ class AES implements Symmetry {
   }
 
   @override
-  Encrypted encryptString(String input, {IV iv}) {
+  Encrypted encryptString(String input, {IV? iv}) {
     _blockCipher
       ..reset()
       ..init(true, _buildParams(iv));
@@ -32,7 +32,7 @@ class AES implements Symmetry {
   }
 
   @override
-  Uint8List decrypt(Encrypted encrypted, {IV iv}) {
+  Uint8List decrypt(Encrypted encrypted, {IV? iv}) {
     _blockCipher
       ..reset()
       ..init(false, _buildParams(iv));
@@ -41,7 +41,7 @@ class AES implements Symmetry {
   }
 
   @override
-  String decrypt2String(Encrypted encrypted, {IV iv}) {
+  String decrypt2String(Encrypted encrypted, {IV? iv}) {
     _blockCipher
       ..reset()
       ..init(false, _buildParams(iv));
@@ -49,7 +49,7 @@ class AES implements Symmetry {
     return convert.utf8.decode(_blockCipher.process(encrypted.bytes));
   }
 
-  CipherParameters _buildParams(IV iv) {
+  CipherParameters _buildParams(IV? iv) {
     if (padding != null) {
       return _paddedParams(iv);
     }
@@ -58,16 +58,16 @@ class AES implements Symmetry {
       return KeyParameter(key.bytes);
     }
 
-    return ParametersWithIV<KeyParameter>(KeyParameter(key.bytes), iv.bytes);
+    return ParametersWithIV<KeyParameter>(KeyParameter(key.bytes), iv!.bytes);
   }
 
-  PaddedBlockCipherParameters _paddedParams(IV iv) {
+  PaddedBlockCipherParameters _paddedParams(IV? iv) {
     if (mode == AESMode.ecb) {
       return PaddedBlockCipherParameters(KeyParameter(key.bytes), null);
     }
 
     return PaddedBlockCipherParameters(
-        ParametersWithIV<KeyParameter>(KeyParameter(key.bytes), iv.bytes),
+        ParametersWithIV<KeyParameter>(KeyParameter(key.bytes), iv!.bytes),
         null);
   }
 }
