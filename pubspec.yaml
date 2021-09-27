@@ -1,7 +1,6 @@
 name: flutter_cipher
 description: A new Flutter Cipher package.
 version: 0.0.1
-author: yourks <yourks@aliyun.com>
 homepage: https://github.com/YoursChan/flutter_cipher
 
 environment:

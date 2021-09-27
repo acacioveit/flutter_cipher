@@ -9,12 +9,12 @@ class Encrypted {
   /// Creates an Encrypted object from a hexdecimal string.
   Encrypted.fromBase16(String encoded)
       : _bytes = Uint8List.fromList(
-    List.generate(encoded.length,
-            (i) => i % 2 == 0 ? encoded.substring(i, i + 2) : null)
-        .where((b) => b != null)
-        .map((b) => int.parse(b!, radix: 16))
-        .toList(),
-  );
+          List.generate(encoded.length,
+                  (i) => i % 2 == 0 ? encoded.substring(i, i + 2) : null)
+              .where((b) => b != null)
+              .map((b) => int.parse(b!, radix: 16))
+              .toList(),
+        );
 
   /// Creates an Encrypted object from a Base64 string.
   Encrypted.fromBase64(String encoded)

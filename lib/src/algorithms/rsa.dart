@@ -2,18 +2,20 @@ part of flutter_cipher;
 
 /// Wraps the RSA Engine Algorithm.
 class RSA extends Asymmetric {
-  final RSAPublicKey publicKey;
-  final RSAPrivateKey privateKey;
+  final RSAPublicKey? publicKey;
+  final RSAPrivateKey? privateKey;
 
-  final PublicKeyParameter<RSAPublicKey> _publicKeyParams;
-  final PrivateKeyParameter<RSAPrivateKey> _privateKeyParameter;
+  final PublicKeyParameter<RSAPublicKey>? _publicKeyParams;
+  final PrivateKeyParameter<RSAPrivateKey>? _privateKeyParameter;
 
-  final AsymmetricBlockCipher _asymmetricBlockCipher = PKCS1Encoding(RSAEngine());
+  final AsymmetricBlockCipher _asymmetricBlockCipher =
+      PKCS1Encoding(RSAEngine());
 
-
-  RSA({required this.publicKey, required this.privateKey})
-      : this._publicKeyParams = PublicKeyParameter(publicKey),
-        this._privateKeyParameter = PrivateKeyParameter(privateKey);
+  RSA({this.publicKey, this.privateKey})
+      : this._publicKeyParams =
+            publicKey != null ? PublicKeyParameter(publicKey) : null,
+        this._privateKeyParameter =
+            privateKey != null ? PrivateKeyParameter(privateKey) : null;
 
   @override
   String decryptPrivate(Encrypted encrypted, {IV? iv}) {
@@ -23,7 +25,7 @@ class RSA extends Asymmetric {
 
     _asymmetricBlockCipher
       ..reset()
-      ..init(false, _privateKeyParameter);
+      ..init(false, _privateKeyParameter!);
 
     return convert.utf8.decode(_asymmetricBlockCipher.process(encrypted.bytes));
   }
@@ -36,14 +38,14 @@ class RSA extends Asymmetric {
 
     _asymmetricBlockCipher
       ..reset()
-      ..init(false, _publicKeyParams);
+      ..init(false, _publicKeyParams!);
 
     return convert.utf8.decode(_asymmetricBlockCipher.process(encrypted.bytes));
   }
 
   @override
   Encrypted encryptPrivate(String input, {IV? iv}) {
-    if (null == input || input.isEmpty) {
+    if (input.isEmpty) {
       throw StateError('The data cannot be null or empty.');
     }
 
@@ -53,15 +55,15 @@ class RSA extends Asymmetric {
 
     _asymmetricBlockCipher
       ..reset()
-      ..init(true, _privateKeyParameter);
+      ..init(true, _privateKeyParameter!);
 
-    return Encrypted(
-        _asymmetricBlockCipher.process(Uint8List.fromList(convert.utf8.encode(input))));
+    return Encrypted(_asymmetricBlockCipher
+        .process(Uint8List.fromList(convert.utf8.encode(input))));
   }
 
   @override
   Encrypted encryptPublic(String input, {IV? iv}) {
-    if (null == input || input.isEmpty) {
+    if (input.isEmpty) {
       throw StateError('The data cannot be null or empty.');
     }
 
@@ -71,10 +73,10 @@ class RSA extends Asymmetric {
 
     _asymmetricBlockCipher
       ..reset()
-      ..init(true, _publicKeyParams);
+      ..init(true, _publicKeyParams!);
 
-    return Encrypted(
-        _asymmetricBlockCipher.process(Uint8List.fromList(convert.utf8.encode(input))));
+    return Encrypted(_asymmetricBlockCipher
+        .process(Uint8List.fromList(convert.utf8.encode(input))));
   }
 }
 
@@ -149,4 +151,3 @@ class RSAKeyParser {
     return parser.nextObject() as ASN1Sequence;
   }
 }
-

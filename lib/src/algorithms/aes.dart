@@ -8,9 +8,9 @@ class AES implements Symmetry {
   final BlockCipher _blockCipher;
 
   AES(this.key, {this.mode = AESMode.sic, this.padding = 'PKCS7'})
-      : _blockCipher = padding != null
-      ? PaddedBlockCipher('AES/${_modes[mode]}/$padding')
-      : BlockCipher('AES/${_modes[mode]}');
+      : _blockCipher = padding.isEmpty == false
+            ? PaddedBlockCipher('AES/${_modes[mode]}/$padding')
+            : BlockCipher('AES/${_modes[mode]}');
 
   @override
   Encrypted encrypt(Uint8List bytes, {IV? iv}) {
